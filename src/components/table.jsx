@@ -1,5 +1,6 @@
 import React from 'react'
 import Badge from './badge'
+import UserRow from './userRow'
 
 const Table = ({users,onDeleteUser,onFavoriteUser}) => {
 	return (
@@ -18,25 +19,15 @@ const Table = ({users,onDeleteUser,onFavoriteUser}) => {
 			<tbody>
 			{users.map(user=>{
 				const qualities = user.qualities.map(quality=><Badge key={user._id+quality.name} quality={quality}/>)
-				return (
-					<tr key={user._id}>
-						<td >{user.name}</td>
-						<td>{qualities}</td>
-						<td>{user.profession.name}</td>
-						<td>{user.completedMeetings}</td>
-						<td>
-							<button onClick={()=>onFavoriteUser(user._id)} className='btn btn-dark mx-auto d-block'>
-								{!user.status ? <i className="bi bi-star"/> : <i className="bi bi-star-fill text-warning"/>}
-							</button>
-						</td>
-						<td>{user.rate}/5</td>
-						<td><button onClick={()=>onDeleteUser(user._id)} className="btn btn-danger"><i className="bi bi-trash"/></button></td>
-					</tr>
-				)
+				return <UserRow
+					key={user._id}
+					user={user}
+					qualities={qualities}
+					onDeleteUser={onDeleteUser}
+					onFavoriteUser={onFavoriteUser}/>
 			})}
 			</tbody>
 		</table>
-
 	)
 }
 
