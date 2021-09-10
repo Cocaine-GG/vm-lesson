@@ -1,8 +1,9 @@
 import React from 'react'
 import Badge from './badge'
 import UserRow from './userRow'
+import {NUMBER_ELEMENTS_FOR_ONE_PAGE} from '../utils'
 
-const Table = ({users,onDeleteUser,onFavoriteUser}) => {
+const Table = ({users,onDeleteUser,onFavoriteUser,page}) => {
 	return (
 		<table className="table table-striped">
 			<thead className='table-dark'>
@@ -25,7 +26,7 @@ const Table = ({users,onDeleteUser,onFavoriteUser}) => {
 					qualities={qualities}
 					onDeleteUser={onDeleteUser}
 					onFavoriteUser={onFavoriteUser}/>
-			})}
+			}).filter((el,i)=>i<NUMBER_ELEMENTS_FOR_ONE_PAGE*page  && i>=NUMBER_ELEMENTS_FOR_ONE_PAGE*(page-1))}
 			</tbody>
 		</table>
 	)
