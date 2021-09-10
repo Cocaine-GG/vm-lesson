@@ -1,11 +1,9 @@
-import React, {useState} from 'react'
-import api from '../api'
+import React from 'react'
 import Badge from './badge'
 import Table from './table'
 
-const Users = () => {
-	const [users,setUsers] = useState(api.users.fetchAll())
-	const userDeleteHandler = (id) => setUsers(users.filter(user=>user._id !== id))
+const Users = (props) => {
+	const {users} = props
 	const persons = users.length > 1 && users.length < 5 ? 'человека' : 'человек'
 	const badgeProps = {
 		color: users.length ? 'primary' : 'danger',
@@ -15,7 +13,7 @@ const Users = () => {
 	return (
 		<>
 			<Badge quality={badgeProps}/>
-			{users.length ? <Table users={users} userDeleteHandler={userDeleteHandler}/> : null}
+			{users.length ? <Table {...props}/> : null}
 		</>
 	)
 }
