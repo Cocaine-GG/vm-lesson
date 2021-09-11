@@ -1,21 +1,46 @@
 import React from 'react'
-import {NUMBER_ELEMENTS_FOR_ONE_PAGE} from '../utils'
+import PropTypes from 'prop-types'
+import { NUMBER_ELEMENTS_FOR_ONE_PAGE } from '../utils'
 
-const Pagination = ({usersLength,setPage, page}) => {
-	const  numOfPage = usersLength/NUMBER_ELEMENTS_FOR_ONE_PAGE
-	const pagesButtons = []
-	for (let i = 0; i < numOfPage; i++) {
-		const paginationClass = page === i + 1 ? 'page-item active' : 'page-item'
-		pagesButtons.push(
-			<li key={i} onClick={() => setPage(i + 1)} className={paginationClass}>
-				<span className="page-link">{i + 1}</span>
-			</li>)
-	}
-	return (
-			<ul className="pagination justify-content-center">
-				{pagesButtons}
-			</ul>
-	)
+const Pagination = ({ itemsCount, setCurrentPage, currentPage }) => {
+  const numOfPage = itemsCount / NUMBER_ELEMENTS_FOR_ONE_PAGE
+  if (numOfPage <= 1) return null
+
+  const changePage = (direction) => {
+    if (currentPage < numOfPage) {
+      if (direction === 'next') setCurrentPage(currentPage + 1)
+    }
+    if (currentPage > 1) {
+      if (direction === 'prev') setCurrentPage(currentPage - 1)
+    }
+  }
+  const style = { cursor: 'pointer', userSelect: 'none' }
+  const pageButtons = []
+  for (let i = 1; i <= numOfPage; i++) {
+    const paginationClass = currentPage === i ? 'page-item active' : 'page-item'
+    pageButtons.push(
+      <li key={i} onClick={() => setCurrentPage(i)} className={paginationClass}>
+        <span className="page-link">{i}</span>
+      </li>
+    )
+  }
+  return (
+    <ul style={style} className="pagination justify-content-center">
+      <li onClick={() => changePage('prev')} className="page-item">
+        <span className="page-link">Prev</span>
+      </li>
+      {pageButtons}
+      <li onClick={() => changePage('next')} className="page-item">
+        <span className="page-link">Next</span>
+      </li>
+    </ul>
+  )
+}
+
+Pagination.propTypes = {
+  itemsCount: PropTypes.number.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  setCurrentPage: PropTypes.func.isRequired
 }
 
 export default Pagination
