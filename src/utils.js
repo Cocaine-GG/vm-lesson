@@ -1,5 +1,7 @@
-const usersDataTransform = (users) =>
-  users.map((user) => ({ ...user, status: false }))
 const NUMBER_ELEMENTS_FOR_ONE_PAGE = 4
+const usersDataTransform = (users) => users.map((user) => ({ ...user, status: false }))
+const pagination = (arr, currentPage) =>{
+	return arr.filter((el, i) => i < NUMBER_ELEMENTS_FOR_ONE_PAGE * currentPage && i >= NUMBER_ELEMENTS_FOR_ONE_PAGE * (currentPage - 1))
+}
 
-export { usersDataTransform, NUMBER_ELEMENTS_FOR_ONE_PAGE }
+export { usersDataTransform, pagination, NUMBER_ELEMENTS_FOR_ONE_PAGE }
