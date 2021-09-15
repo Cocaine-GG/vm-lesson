@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+
 const GroupList = ({
 	items,
 	valueProperty,
@@ -9,19 +10,17 @@ const GroupList = ({
 }) => {
 	return (
 		<ul className="list-group text-center">
-			{Object.keys(items).map((item) => {
+			{Object.values(items).map((item) => {
 				const className =
-					items[item] === selectedItem
-						? 'list-group-item active'
-						: 'list-group-item'
+					item === selectedItem ? 'list-group-item active' : 'list-group-item'
 				return (
 					<li
-						onClick={() => onItemSelect(items[item])}
-						key={items[item][valueProperty]}
+						onClick={() => onItemSelect(item)}
+						key={item[valueProperty]}
 						className={className}
 						role="button"
 					>
-						{items[item][contentProperty]}
+						{item[contentProperty]}
 					</li>
 				)
 			})}
@@ -34,7 +33,7 @@ GroupList.defaultProps = {
 	contentProperty: 'name'
 }
 GroupList.propTypes = {
-	items: PropTypes.object.isRequired,
+	items: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	valueProperty: PropTypes.string.isRequired,
 	contentProperty: PropTypes.string.isRequired,
 	onItemSelect: PropTypes.func.isRequired,

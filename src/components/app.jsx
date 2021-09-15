@@ -24,7 +24,10 @@ const App = () => {
 		setSelectedProf(item) & setCurrentPage(1)
 	const clearFilter = () => setSelectedProf() & setCurrentPage(1)
 	const usersFilter = selectedProf
-		? users.filter((user) => user.profession === selectedProf)
+		? users.filter(
+			(user) =>
+				JSON.stringify(user.profession) === JSON.stringify(selectedProf)
+		)
 		: users
 	const usersCrop = pagination(usersFilter, currentPage)
 	const usersLength = usersFilter.length
