@@ -15,11 +15,11 @@ const Test = () => {
 	const [currentPage, setCurrentPage] = useState(1)
 	const handlerUserDelete = (id) => setUsers(users.filter((user) => user._id !== id))
 	const handlerUserFavorite = (id) => setUsers(users.map((user) => user._id === id ? { ...user, status: !user.status } : { ...user }))
-	const handlerProfessionSelect = (item) => setSelectedProf(item) & setCurrentPage(1)
+	const handlerProfessionSelect = (item) => setSelectedProf(item)
 	const clearFilter = () => setSelectedProf() & setCurrentPage(1)
 	const usersFilter = selectedProf ? users.filter(user=>user.profession===selectedProf) : users
 	const usersCrop = pagination(usersFilter,currentPage)
-	const usersLength = usersFilter.length
+	const usersLength = usersCrop.length
 
 	useEffect(() => {api.professions().then(setProfessions)}, [professions])
 
