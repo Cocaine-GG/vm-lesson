@@ -5,7 +5,6 @@ import { NUMBER_ELEMENTS_FOR_ONE_PAGE } from '../utils'
 const Pagination = ({ itemsCount, setCurrentPage, currentPage }) => {
 	const numOfPage = Math.ceil(itemsCount / NUMBER_ELEMENTS_FOR_ONE_PAGE)
 	if (numOfPage < 1) return null
-
 	const changePage = (direction) => {
 		if (currentPage < numOfPage) {
 			if (direction === 'next') setCurrentPage(currentPage + 1)
@@ -15,6 +14,22 @@ const Pagination = ({ itemsCount, setCurrentPage, currentPage }) => {
 		}
 	}
 	const style = { cursor: 'pointer', userSelect: 'none' }
+
+
+	return (
+		<ul style={style} className="pagination justify-content-center">
+			<li onClick={() => changePage('prev')} className="page-item">
+				<span className="page-link">Prev</span>
+			</li>
+			{getPaginationButton(numOfPage,currentPage,setCurrentPage)}
+			<li onClick={() => changePage('next')} className="page-item">
+				<span className="page-link">Next</span>
+			</li>
+		</ul>
+	)
+}
+
+function getPaginationButton (numOfPage,currentPage,setCurrentPage) {
 	const pageButtons = []
 	for (let i = 1; i <= numOfPage; i++) {
 		const paginationClass = currentPage === i ? 'page-item active' : 'page-item'
@@ -24,17 +39,7 @@ const Pagination = ({ itemsCount, setCurrentPage, currentPage }) => {
 			</li>
 		)
 	}
-	return (
-		<ul style={style} className="pagination justify-content-center">
-			<li onClick={() => changePage('prev')} className="page-item">
-				<span className="page-link">Prev</span>
-			</li>
-			{pageButtons}
-			<li onClick={() => changePage('next')} className="page-item">
-				<span className="page-link">Next</span>
-			</li>
-		</ul>
-	)
+	return pageButtons
 }
 
 Pagination.propTypes = {

@@ -1,43 +1,44 @@
-import React, {useEffect, useState} from 'react'
-import Badge from './badge'
-import Table from './table'
+import React from 'react'
 import PropTypes from 'prop-types'
-import api from '../api'
-import GroupList from './groupList'
+import Badge from './badge'
+import UserRow from './userRow'
 
-const Users = (props) => {
-	const { users } = props
-	const [professions, setProfessions] = useState(null)
-	const [selectedProf, setSelectedProf] = useState()
-	const persons = users.length > 1 && users.length < 5 ? 'человека' : 'человек'
-	const badgeProps = {
-		color: users.length ? 'primary' : 'danger',
-		name: users.length ? `${users.length} ${persons} тусанет с тобой сегодня` : 'Никто с тобой не тусанет',
-		style: { fontSize: '2rem', marginBottom: '0.5rem' }
-	}
-	const handlerProfessionSelect = (item) => {
-		setSelectedProf(item)
-	}
-	const clearFilter = () => setSelectedProf()
-	useEffect(() => {
-		api.professions().then(setProfessions)
-	}, [professions])
+const Users = ({ users, onDeleteUser, onFavoriteUser }) => {
+	if (!users.length) return null
 	return (
-		<>
-			<Badge quality={badgeProps} />
-			{professions &&
-			<GroupList
-				items={professions}
-				selectedItem={selectedProf}
-				onItemSelect={handlerProfessionSelect}/>}
-			<button onClick={clearFilter} className='btn btn-secondary my-2'>Очистить</button>
-			{users.length ? <Table {...props} selectItem={selectedProf} /> : null}
-		</>
+		<table className="table table-striped">
+			<thead className="table-dark">
+			<tr>
+				<th>Имя</th>
+				<th>Качества</th>
+				<th>Профессия</th>
+				<th>Встретился, раз</th>
+				<th className="text-center">Избранное</th>
+				<th>Оценка</th>
+				<th />
+			</tr>
+			</thead>
+			<tbody>
+			{users.map((user) => {
+				const qualities = user.qualities.map((quality) => (<Badge key={user._id + quality.name} quality={quality}/>))
+				return (<UserRow
+					key={user._id}
+					user={user}
+					qualities={qualities}
+					onDeleteUser={onDeleteUser}
+					onFavoriteUser={onFavoriteUser}
+				/>)
+			})
+			}
+			</tbody>
+		</table>
 	)
 }
 
 Users.propTypes = {
-	users: PropTypes.array.isRequired
+	users: PropTypes.array.isRequired,
+	onDeleteUser: PropTypes.func.isRequired,
+	onFavoriteUser: PropTypes.func.isRequired,
 }
 
 export default Users

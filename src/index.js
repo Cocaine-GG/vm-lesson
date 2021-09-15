@@ -1,9 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './components/app'
+// import App from './components/app'
+import Test from './components/test'
 
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<Test />, document.getElementById('root'))
