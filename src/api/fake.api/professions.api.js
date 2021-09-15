@@ -7,8 +7,9 @@ export const professions = {
 	cook: { _id: '67rdca3eeb7f6fgeed471829', name: 'Повар' }
 }
 
-const fetchAll = () => new Promise((res) => {
-	setTimeout(() => res(professions), 500)
-})
+const fetchAll = () =>
+	new Promise((resolve) => {
+		setTimeout(() => resolve(professions), 500)
+	})
 
 export default fetchAll

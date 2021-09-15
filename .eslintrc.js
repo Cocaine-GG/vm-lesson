@@ -17,6 +17,9 @@ module.exports = {
 		'multiline-ternary': ['error', 'always-multiline'],
 		indent: [2, 'tab'],
 		'no-tabs': 0,
-		'space-before-function-paren': ['error', { anonymous: 'always', named: 'never' }]
+		'space-before-function-paren': [
+			'error',
+			{ anonymous: 'always', named: 'never' }
+		]
 	}
 }

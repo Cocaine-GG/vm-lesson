@@ -127,6 +127,6 @@ const users = [
 	}
 ]
 
-export function fetchAll () {
+export function fetchAll() {
 	return users
 }

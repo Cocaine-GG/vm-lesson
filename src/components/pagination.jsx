@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { NUMBER_ELEMENTS_FOR_ONE_PAGE } from '../utils'
 
 const Pagination = ({ itemsCount, setCurrentPage, currentPage }) => {
 	const numOfPage = Math.ceil(itemsCount / NUMBER_ELEMENTS_FOR_ONE_PAGE)
+	useEffect(() => {
+		if (currentPage !== 1) {
+			setCurrentPage(numOfPage)
+		}
+	}, [numOfPage, setCurrentPage])
+
 	if (numOfPage < 1) return null
 	const changePage = (direction) => {
 		if (currentPage < numOfPage) {
@@ -15,13 +21,12 @@ const Pagination = ({ itemsCount, setCurrentPage, currentPage }) => {
 	}
 	const style = { cursor: 'pointer', userSelect: 'none' }
 
-
 	return (
 		<ul style={style} className="pagination justify-content-center">
 			<li onClick={() => changePage('prev')} className="page-item">
 				<span className="page-link">Prev</span>
 			</li>
-			{getPaginationButton(numOfPage,currentPage,setCurrentPage)}
+			{getPaginationButton(numOfPage, currentPage, setCurrentPage)}
 			<li onClick={() => changePage('next')} className="page-item">
 				<span className="page-link">Next</span>
 			</li>
@@ -29,7 +34,7 @@ const Pagination = ({ itemsCount, setCurrentPage, currentPage }) => {
 	)
 }
 
-function getPaginationButton (numOfPage,currentPage,setCurrentPage) {
+function getPaginationButton(numOfPage, currentPage, setCurrentPage) {
 	const pageButtons = []
 	for (let i = 1; i <= numOfPage; i++) {
 		const paginationClass = currentPage === i ? 'page-item active' : 'page-item'

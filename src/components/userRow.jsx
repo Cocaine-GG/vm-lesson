@@ -1,5 +1,5 @@
 import React from 'react'
-import FavoriteBtn from './favoriteBtn'
+import FavoriteBtn from './favorite-btn'
 import PropTypes from 'prop-types'
 
 const UserRow = ({ user, qualities, onFavoriteUser, onDeleteUser }) => {
