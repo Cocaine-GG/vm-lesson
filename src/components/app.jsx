@@ -4,15 +4,16 @@ import { pagination, usersDataTransform } from '../utils'
 
 import PeopleCounter from './people-counter'
 import GroupList from './group-list'
-import UsersTable from './users-table'
+import Table from './table/table'
 import Pagination from './pagination'
 
 const App = () => {
-	const [users, setUsers] = useState(usersDataTransform(api.users.fetchAll()))
+	const initialUsers = usersDataTransform(api.users.fetchAll())
+	const [users, setUsers] = useState(initialUsers)
 	const [professions, setProfessions] = useState(null)
 	const [selectedProf, setSelectedProf] = useState()
 	const [currentPage, setCurrentPage] = useState(1)
-	const [sortBy, setSortBy] = useState({iter: null, order : ''})
+	const [sortBy, setSortBy] = useState({path: 'completedMeetings', order : 'desc'})
 	const handlerUserDelete = (id) =>
 		setUsers(users.filter((user) => user._id !== id))
 	const handlerUserFavorite = (id) =>
@@ -21,39 +22,28 @@ const App = () => {
 				user._id === id ? { ...user, status: !user.status } : { ...user }
 			)
 		)
-	const handlerUsersSort = (item) => {
-		const {order} = sortBy
-		if(order === '') {
-			setSortBy({iter:item, order: 'asc'})
-		}
-		if (order === 'asc'){
-			setSortBy({iter:item, order: 'desc'})
-		}
-		if (order === 'desc'){
-			setSortBy({iter:null, order: ''})
-		}
-	}
+	const handlerSort = (item) => setSortBy(item)
+
 	const handlerProfessionSelect = (item) =>
 		setSelectedProf(item) & setCurrentPage(1)
 	const clearFilter = () => setSelectedProf() & setCurrentPage(1)
 
-	console.log(users)
-	const usersFilter = selectedProf
+		const usersFilter = selectedProf
 		? users.filter(
 			(user) =>
 				JSON.stringify(user.profession) === JSON.stringify(selectedProf)
 		)
 		: users
 	const usersSorted = usersFilter.sort((a,b)=>{
-		const {iter, order} = sortBy
-		if(!iter || order === '') return
+		const {path, order} = sortBy
+		if(!path || order === '') return a
 		let currentEl = (order === 'asc') ? a : b
 		let nextEl = (order === 'asc') ? b : a
-		if(!isNaN(a[iter]) && !isNaN(b[iter])) return currentEl[iter] - nextEl[iter]
+		if(!isNaN(a[path]) && !isNaN(b[path])) return currentEl[path] - nextEl[path]
 
-		const [first, second] = iter.split('.')
+		const [first, second] = path.split('.')
 		if(!second) {
-			return currentEl[iter].localeCompare(nextEl[iter])
+			return currentEl[path].localeCompare(nextEl[path])
 		}else {
 			return currentEl[first][second].localeCompare(nextEl[first][second])
 		}
@@ -82,11 +72,12 @@ const App = () => {
 				)}
 				{usersLength > 0 && (
 					<div className="w-100 m-2">
-						<UsersTable
+						<Table
 							users={usersCrop}
 							onDeleteUser={handlerUserDelete}
 							onFavoriteUser={handlerUserFavorite}
-							onSort={handlerUsersSort}
+							selectedSort={sortBy}
+							onSort={handlerSort}
 						/>
 						<Pagination
 							setCurrentPage={setCurrentPage}
