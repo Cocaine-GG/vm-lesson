@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Counter from './components/counter'
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.css'
+import App from './components/app'
 
-ReactDOM.render(<Counter/>, document.getElementById('root'))
+ReactDOM.render(<App/>, document.getElementById('root'))
