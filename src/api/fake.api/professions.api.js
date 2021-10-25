@@ -18,7 +18,7 @@ export const professions = [
 
 const fetchAll = () =>
 	new Promise((resolve) => {
-		setTimeout(() => resolve(professions), 2500)
+		setTimeout(() => resolve(professions), 650)
 	})
 
 export default fetchAll

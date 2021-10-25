@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from 'react'
-import api from '../api'
-import { pagination, usersDataTransform } from '../utils'
-
-import PeopleCounter from './people-counter'
-import GroupList from './group-list'
-import Table from './table/table'
-import Pagination from './pagination'
+import api from '../../api'
+import PeopleCounter from '../people-counter'
+import GroupList from '../group-list'
+import Table from '../table/table'
+import Pagination from '../pagination'
+import { pagination, usersDataTransform } from '../../utils'
 
 const Users = () => {
 	const [users, setUsers] = useState(null)
 	const [professions, setProfessions] = useState(null)
 	const [selectedProf, setSelectedProf] = useState()
 	const [currentPage, setCurrentPage] = useState(1)
-	useEffect(() => {
-		api.professions().then(setProfessions)
-		api.users().then(usersDataTransform).then(setUsers)
-		console.log('Если добавляю users в useEffect, получаю зацикливание...')
-	}, [professions])
 	const [sortBy, setSortBy] = useState({
 		path: 'completedMeetings',
 		order: 'desc'
 	})
+	useEffect(() => {
+		api.professions().then(setProfessions)
+		api.getAllUsers().then(usersDataTransform).then(setUsers)
+		// console.log('Если добавляю users в useEffect, получаю зацикливание...')
+	}, [])
+
 	if (!users) {
-		return 'loading....'
+		return <h3 className="text-center">Loading....</h3>
 	}
 	const handlerUserDelete = (id) =>
 		setUsers(users.filter((user) => user._id !== id))
@@ -49,7 +49,9 @@ const Users = () => {
 		if (!path || order === '') return a
 		const currentEl = order === 'asc' ? a : b
 		const nextEl = order === 'asc' ? b : a
-		if (!isNaN(a[path]) && !isNaN(b[path])) { return currentEl[path] - nextEl[path] }
+		if (!isNaN(a[path]) && !isNaN(b[path])) {
+			return currentEl[path] - nextEl[path]
+		}
 
 		const [first, second] = path.split('.')
 		if (!second) {
